@@ -5,15 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFT Holder Verification</title>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        #verificationForm {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+        #result {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>NFT Holder Verification</h1>
-    <form id="verificationForm">
-        <label for="address">Ethereum Address:</label>
-        <input type="text" id="address" name="address" required>
-        <button type="submit">Verify</button>
-    </form>
-    <div id="result"></div>
+    <canvas id="canvas"></canvas>
+    <div id="verificationForm">
+        <h1>NFT Holder Verification</h1>
+        <form id="verificationForm">
+            <label for="address">Ethereum Address:</label>
+            <input type="text" id="address" name="address" required>
+            <button type="submit">Verify</button>
+        </form>
+        <div id="result"></div>
+    </div>
 
     <script>
         // NFT contract address and token ID
@@ -39,11 +63,8 @@
                 const web3 = new Web3(window.ethereum);
                 try {
                     await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    console.log("Connected to Ethereum network");
                     const contract = new web3.eth.Contract(nftAbi, nftContractAddress);
-                    console.log("Contract instantiated", contract);
                     const balance = await contract.methods.balanceOf(address, tokenId).call();
-                    console.log("Balance fetched", balance);
                     return balance > 0;
                 } catch (error) {
                     console.error("Error fetching balance:", error);
@@ -58,10 +79,80 @@
         document.getElementById('verificationForm').addEventListener('submit', async function(event) {
             event.preventDefault();
             const address = document.getElementById('address').value;
-            console.log("Verifying address", address);
             const isHolder = await verifyNftHolder(address);
             document.getElementById('result').textContent = isHolder ? 'You are an NFT holder!' : 'You are not an NFT holder.';
         });
+
+        // Creating the canvas
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Generating random points
+        const points = [];
+        const numPoints = 100;
+
+        for (let i = 0; i < numPoints; i++) {
+            points.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: Math.random() - 0.5, // Random velocity
+                vy: Math.random() - 0.5 // Random velocity
+            });
+        }
+
+        // Generating random lines between points
+        const lines = [];
+        const numLines = 50;
+
+        for (let i = 0; i < numLines; i++) {
+            const start = Math.floor(Math.random() * points.length);
+            let end = Math.floor(Math.random() * points.length);
+            while (end === start) {
+                end = Math.floor(Math.random() * points.length);
+            }
+            lines.push({ start, end });
+        }
+
+        // Animation function
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw lines between points
+            lines.forEach(line => {
+                const start = points[line.start];
+                const end = points[line.end];
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.stroke();
+            });
+
+            // Draw points
+            points.forEach(point => {
+                point.x += point.vx;
+                point.y += point.vy;
+
+                if (point.x < 0 || point.x > canvas.width) {
+                    point.vx *= -1;
+                }
+
+                if (point.y < 0 || point.y > canvas.height) {
+                    point.vy *= -1;
+                }
+
+                ctx.beginPath();
+                ctx.fillStyle = '#ffffff';
+                ctx.arc(point.x, point.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
     </script>
 </body>
 </html>
