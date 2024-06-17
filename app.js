@@ -1,4 +1,4 @@
-const contractAddress = 'YOUR_NFT_CONTRACT_ADDRESS'; // Replace with your NFT contract address
+const contractAddress = '0xD1e47b0Df04D62AF136122608851A242BAfF415B'; // Replace with your NFT contract address
 const contractABI = NFTContractABI; // Use the ABI you generated
 
 let web3;
