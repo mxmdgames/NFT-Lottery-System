@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Lottery</title>
+</head>
+<body>
+    <h1>NFT Lottery System</h1>
+    <button id="enterLottery">Enter Lottery</button>
+    <button id="drawWinner">Draw Winner</button>
+    <p id="winner"></p>
+
+    <!-- Include Web3.js -->
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.6/dist/web3.min.js"></script>
+    <!-- Include the contract ABI -->
+    <script src="NFTLotteryABI.js"></script>
+    <script>
+        const contractAddress = 'YOUR_CONTRACT_ADDRESS'; // Replace with your contract address
+        const contractABI = NFTLotteryABI; // Use the ABI you generated
+
+        let web3;
+        let lotteryContract;
+        let userAccount;
+
+        // Load web3
+        window.addEventListener('load', async () => {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                try {
+                    // Request account access if needed
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    // Accounts now exposed
+                    const accounts = await web3.eth.getAccounts();
+                    userAccount = accounts[0];
+                    lotteryContract = new web3.eth.Contract(contractABI, contractAddress);
+                } catch (error) {
+                    console.error("User denied account access");
+                }
+            } else {
+                console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+            }
+        });
+
+        // Enter lottery function
+        document.getElementById('enterLottery').addEventListener('click', async () => {
+            try {
+                await lotteryContract.methods.enterLottery().send({ from: userAccount });
+                alert("Entered the lottery!");
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        // Draw winner function
+        document.getElementById('drawWinner').addEventListener('click', async () => {
+            try {
+                await lotteryContract.methods.drawWinner().send({ from: userAccount });
+                const winner = await lotteryContract.methods.winner().call();
+                document.getElementById('winner').innerText = `Winner: ${winner}`;
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
