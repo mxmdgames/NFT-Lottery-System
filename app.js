@@ -1,6 +1,8 @@
-const contractAddress = '0xD1e47b0Df04D62AF136122608851A242BAfF415B'; // Replace with your NFT contract address
-const contractABI = NFTContractABI; // Use the ABI you generated
+const NFTContractABI = [
+    // Your ABI content here
+];
 
+const contractAddress = '0xD1e47b0Df04D62AF136122608851A242BAfF415B';
 let web3;
 let nftContract;
 let userAccount;
@@ -15,7 +17,7 @@ window.addEventListener('load', async () => {
             // Accounts now exposed
             const accounts = await web3.eth.getAccounts();
             userAccount = accounts[0];
-            nftContract = new web3.eth.Contract(contractABI, contractAddress);
+            nftContract = new web3.eth.Contract(NFTContractABI, contractAddress);
         } catch (error) {
             console.error("User denied account access");
         }
@@ -26,12 +28,17 @@ window.addEventListener('load', async () => {
 
 // Check NFT ownership function
 document.getElementById('checkNFT').addEventListener('click', async () => {
+    if (!userAccount) {
+        document.getElementById('status').innerText = "Please connect your wallet first.";
+        return;
+    }
+
     try {
         const balance = await nftContract.methods.balanceOf(userAccount).call();
         if (balance > 0) {
             document.getElementById('status').innerText = "Ownership verified. Redirecting...";
             // Redirect to the next page
-            window.location.href = "nextPage.html"; // Replace with your next page URL
+            window.location.href = "nextPage.html";
         } else {
             document.getElementById('status').innerText = "You do not own the required NFT.";
         }
