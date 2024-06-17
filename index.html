@@ -16,12 +16,17 @@
     <div id="result"></div>
 
     <script>
-        // Replace with your NFT contract address and ABI
-        const nftContractAddress = '0xD1e47b0Df04D62AF136122608851A242BAfF415B';
+        // NFT contract address and token ID
+        const nftContractAddress = '0x9f36ee33fd56c7d9A78facD3249c580b1Ca464a2';
+        const tokenId = 2;
+
         const nftAbi = [
             {
                 "constant": true,
-                "inputs": [{"internalType": "address","name": "owner","type": "address"},{"internalType": "uint256","name": "id","type": "uint256"}],
+                "inputs": [
+                    {"internalType": "address","name": "owner","type": "address"},
+                    {"internalType": "uint256","name": "id","type": "uint256"}
+                ],
                 "name": "balanceOf",
                 "outputs": [{"internalType": "uint256","name": "result","type": "uint256"}],
                 "stateMutability": "view",
@@ -35,7 +40,7 @@
                 try {
                     await window.ethereum.enable();
                     const contract = new web3.eth.Contract(nftAbi, nftContractAddress);
-                    const balance = await contract.methods.balanceOf(address).call();
+                    const balance = await contract.methods.balanceOf(address, tokenId).call();
                     return balance > 0;
                 } catch (error) {
                     console.error(error);
