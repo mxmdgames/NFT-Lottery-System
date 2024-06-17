@@ -3,16 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Gatekeeper</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://mainnet.infura.io;">
+    <title>NFT Holder Verification</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
 </head>
 <body>
-    <h1>Welcome to the NFT Gatekeeper</h1>
-    <button id="checkNFT">Check NFT Ownership</button>
-    <p id="status"></p>
+    <h1>NFT Holder Verification</h1>
+    <form id="verificationForm">
+        <label for="address">Ethereum Address:</label>
+        <input type="text" id="address" name="address" required>
+        <button type="submit">Verify</button>
+    </form>
+    <div id="result"></div>
 
-    <!-- Include Web3.js -->
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.6/dist/web3.min.js"></script>
-    <script src="app.js"></script>
+    <script>
+        // Replace with your NFT contract address and ABI
+        const nftContractAddress = '0xD1e47b0Df04D62AF136122608851A242BAfF415B';
+        const nftAbi = [
+            // Minimal ABI to get ERC-721 token balance
+            {
+                "constant": true,
+                "inputs": [{"name": "_owner", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"name": "balance", "type": "uint256"}],
+                "type": "function"
+            }
+        ];
+
+        async function verifyNftHolder(address) {
+            if (window.ethereum) {
+                const web3 = new Web3(window.ethereum);
+                try {
+                    await window.ethereum.enable();
+                    const contract = new web3.eth.Contract(nftAbi, nftContractAddress);
+                    const balance = await contract.methods.balanceOf(address).call();
+                    return balance > 0;
+                } catch (error) {
+                    console.error(error);
+                    return false;
+                }
+            } else {
+                console.error("Ethereum browser extension not detected");
+                return false;
+            }
+        }
+
+        document.getElementById('verificationForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const address = document.getElementById('address').value;
+            const isHolder = await verifyNftHolder(address);
+            document.getElementById('result').textContent = isHolder ? 'You are an NFT holder!' : 'You are not an NFT holder.';
+        });
+    </script>
 </body>
 </html>
