@@ -19,12 +19,12 @@
         // Replace with your NFT contract address and ABI
         const nftContractAddress = '0xD1e47b0Df04D62AF136122608851A242BAfF415B';
         const nftAbi = [
-            // Minimal ABI to get ERC-721 token balance
             {
                 "constant": true,
-                "inputs": [{"name": "_owner", "type": "address"}],
+                "inputs": [{"internalType": "address","name": "owner","type": "address"},{"internalType": "uint256","name": "id","type": "uint256"}],
                 "name": "balanceOf",
-                "outputs": [{"name": "balance", "type": "uint256"}],
+                "outputs": [{"internalType": "uint256","name": "result","type": "uint256"}],
+                "stateMutability": "view",
                 "type": "function"
             }
         ];
