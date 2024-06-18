@@ -52,18 +52,27 @@
             margin-top: 20px;
         }
         #accessButton {
-            margin-top: 20px;
-            padding: 10px;
-            width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
             background-color: #28a745;
             color: #fff;
             border: none;
             cursor: pointer;
             border-radius: 5px;
             display: none;
+            font-size: 20px;
+            animation: flash 1s infinite;
+            z-index: 20;
         }
         #accessButton:hover {
             background-color: #218838;
+        }
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
@@ -126,7 +135,6 @@
             if (isHolder) {
                 resultDiv.textContent = 'You are an NFT holder!';
                 accessButton.style.display = 'block';
-                document.getElementById('verificationForm').style.display = 'none';
                 localStorage.setItem('isNftHolder', 'true'); // Save verification status
             } else {
                 resultDiv.textContent = 'You are not an NFT holder.';
