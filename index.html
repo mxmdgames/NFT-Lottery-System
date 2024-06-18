@@ -77,8 +77,8 @@
             <button type="submit">Verify</button>
         </form>
         <div id="result"></div>
-        <button id="accessButton" onclick="redirectToSpecialPage()">Access Special Page</button>
     </div>
+    <button id="accessButton" onclick="redirectToSpecialPage()">Access Special Page</button>
 
     <script>
         // NFT contract address and token ID
@@ -126,6 +126,7 @@
             if (isHolder) {
                 resultDiv.textContent = 'You are an NFT holder!';
                 accessButton.style.display = 'block';
+                document.getElementById('verificationForm').style.display = 'none';
                 localStorage.setItem('isNftHolder', 'true'); // Save verification status
             } else {
                 resultDiv.textContent = 'You are not an NFT holder.';
