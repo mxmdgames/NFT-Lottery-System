@@ -8,6 +8,7 @@
         body {
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -21,12 +22,49 @@
         .container h1 {
             margin-bottom: 20px;
         }
+        .video, .downloads, .contact {
+            margin: 20px 0;
+            width: 80%;
+            max-width: 800px;
+            text-align: left;
+        }
+        .downloads a {
+            color: #28a745;
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+        }
+        .downloads a:hover {
+            text-decoration: underline;
+        }
+        .contact img {
+            margin-top: 20px;
+            width: 200px;
+            height: 200px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to the Exclusive NFT Holder Page!</h1>
         <p>Only verified NFT holders can see this content.</p>
+        <div class="video">
+            <iframe width="100%" height="450" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video">
+            <iframe width="100%" height="450" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_2" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="downloads">
+            <h2>Downloadable Content</h2>
+            <a href="https://your-server.com/path/to/file1.zip" download>Download File 1</a>
+            <a href="https://your-server.com/path/to/file2.zip" download>Download File 2</a>
+            <a href="https://your-server.com/path/to/file3.zip" download>Download File 3</a>
+        </div>
+        <div class="contact">
+            <h2>Contact the Developer</h2>
+            <p>Scan the QR code below to send a message:</p>
+            <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=https%3A%2F%2Fsimplex.chat%2Fcontact%23%2F%3Fv%3D2-5%26smp%3Dsmp%253A%252F%252FenEkec4hlR3UtKx2NMpOUK_K4ZuDxjWBO1d9Y4YXVaA%253D%2540smp14.simplex.im%252Fs9-uVm0Z1DO0QdQnUnJOAKLbnxMljDTC%2523%252F%253Fv%253D1-2%2526dh%253DMCowBQYDK2VuAyEAiCDSs9hlFLZqN7kg0jRFFUrkro7jWnILoW11b6uWtW0%25253D%2526srv%253Daspkyu2sopsnizbyfabtsicikr2s4r3ti35jogbcekhm3fsoeyjvgrid.onion" alt="Simplex Chat QR Code">
+        </div>
     </div>
 
     <script>
