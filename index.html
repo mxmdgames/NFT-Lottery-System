@@ -77,6 +77,22 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+                .buyButton {
+            display: inline-block;
+            padding: 15px 30px;
+            margin-top: 20px;
+            background-color: #ff4500;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .buyButton:hover {
+            background-color: #ff6347;
+            transform: scale(1.05);
     </style>
 </head>
 <body>
@@ -89,6 +105,7 @@
             <button type="submit">Verify</button>
         </form>
         <div id="result"></div>
+         <a href="https://opensea.io/assets/ethereum/0xd1e47b0df04d62af136122608851a242baff415b/2" target="_blank" class="buyButton">Buy this NFT</a>
     </div>
     <button id="accessButton" onclick="redirectToSpecialPage()">Access Special Page</button>
 
